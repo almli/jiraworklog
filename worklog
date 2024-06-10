@@ -1,0 +1,4 @@
+#!/bin/bash
+
+
+java -jar target/jiraworklog-jar-with-dependencies.jar "./data/" "$@"
