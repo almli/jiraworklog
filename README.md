@@ -6,8 +6,6 @@ Kjøres med `./worklog`
 
 Katalogen som oppgies i worklog scriptet må inneholde en konfigurasjonsfilen beskrevet under.
 
-## Miljøvariabel
-
 Du kan sette miljøvariabelen `JIRAWORKLOG_HOME` for å spesifisere katalogen som inneholder konfigurasjonsfilen og
 timelistene. Hvis `JIRAWORKLOG_HOME` ikke er satt eller er tom, vil standardkatalogen `./data/` bli brukt.
 
@@ -16,6 +14,9 @@ Eksempel:
 ```sh
 export JIRAWORKLOG_HOME="/path/to/your/config"
 ./worklog
+```
+
+
 konfig.yaml:
 ```yaml
 jiraKontoId: <din epost adresse>
