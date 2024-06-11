@@ -16,7 +16,6 @@ public class App {
             return;
         }
         DbService dbService = new DbService(args[0]);
-
         YearMonth yearMonth = null;
         if (args.length == 3) {
             yearMonth = DateUtil.parseYearMonth(args[2]);
@@ -26,7 +25,6 @@ public class App {
         if (yearMonth == null) {
             yearMonth = YearMonth.now();
         }
-
         Konfig konfig = dbService.getKonfig();
         JiraIssueService jiraIssueService = new JiraIssueService(konfig.jiraUrl, konfig.jiraApiToken, konfig.jiraKontoId);
         AppService appService = new AppService(dbService, jiraIssueService);
@@ -54,5 +52,4 @@ public class App {
         System.out.println("   d) push - Oppdaterer Jira med timelisten.");
         System.out.println("3) år måned (valgfritt) - År og måned i formatet 'yyyyMM'. Om ikke oppgitt brukes siste tilgjengelige ('pull', 'test', og 'push').");
     }
-
 }

@@ -1,9 +1,6 @@
 package no.persistence.jiraworklog;
 
-import no.persistence.jiraworklog.model.AktivitetDef;
-import no.persistence.jiraworklog.model.DatoAktivitet;
-import no.persistence.jiraworklog.model.DatoAktivitetKey;
-import no.persistence.jiraworklog.model.Konfig;
+import no.persistence.jiraworklog.model.*;
 import no.persistence.jiraworklog.util.DateUtil;
 
 import java.io.IOException;
@@ -39,11 +36,9 @@ public class AppService {
 
     public void push(YearMonth yearMonth, boolean test) throws IOException {
         PushDesc pushDesc = buildPush(yearMonth);
-
         if (pushDesc.adds.isEmpty() && pushDesc.deletes.isEmpty() && pushDesc.adds.isEmpty()) {
             System.out.println("Lokal timeliste og JIRA worklog er identiske for " + DateUtil.formatYearMonth(yearMonth));
             return;
-
         }
         if (!pushDesc.deletes.isEmpty()) {
             System.out.println("Følgende aktiviteter vil slettes fra JIRA");

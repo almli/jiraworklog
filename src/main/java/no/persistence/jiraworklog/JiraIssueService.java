@@ -27,15 +27,22 @@ public class JiraIssueService {
         this.jiraAccountId = jiraAccountId;
     }
 
-    public void deleteWorkLogEntry(String issueId, String worklogId) throws IOException {
+    private String getAuthHeader() throws IOException {
         if (jiraToken == null || jiraAccountId == null) {
             throw new IOException("Jira token or account id not set");
         }
-        OkHttpClient client = new OkHttpClient();
         String credentials = Base64.getEncoder().encodeToString((jiraAccountId + ":" + jiraToken).getBytes());
+        return "Basic " + credentials;
+    }
 
-        Request request = new Request.Builder().url(jiraBaseUri + "/rest/api/3/issue/" + issueId + "/worklog/" + worklogId).delete().addHeader("Authorization", "Basic " + credentials).addHeader("Content-Type", "application/json").build();
-
+    public void deleteWorkLogEntry(String issueId, String worklogId) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(jiraBaseUri + "/rest/api/3/issue/" + issueId + "/worklog/" + worklogId)
+                .delete()
+                .addHeader("Authorization", getAuthHeader())
+                .addHeader("Content-Type", "application/json")
+                .build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
@@ -45,16 +52,17 @@ public class JiraIssueService {
     }
 
     public String logWork(String issueId, OffsetDateTime startet, Duration duration) throws IOException, JSONException {
-        if (jiraToken == null || jiraAccountId == null) {
-            throw new IOException("Jira token or account id not set");
-        }
         OkHttpClient client = new OkHttpClient();
         JSONObject payload = new JSONObject();
         payload.put("started", startet.format(dateTimeFormatter));
         payload.put("timeSpentSeconds", duration.getSeconds());
-        String credentials = Base64.getEncoder().encodeToString((jiraAccountId + ":" + jiraToken).getBytes());
         RequestBody body = RequestBody.create(payload.toString(), MediaType.get("application/json; charset=utf-8"));
-        Request request = new Request.Builder().url(jiraBaseUri + "/rest/api/3/issue/" + issueId + "/worklog").post(body).addHeader("Authorization", "Basic " + credentials).addHeader("Content-Type", "application/json").build();
+        Request request = new Request.Builder()
+                .url(jiraBaseUri + "/rest/api/3/issue/" + issueId + "/worklog")
+                .post(body)
+                .addHeader("Authorization", getAuthHeader())
+                .addHeader("Content-Type", "application/json")
+                .build();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response);
@@ -68,17 +76,19 @@ public class JiraIssueService {
     public List<DatoAktivitet> getWorkLog(String issueId, String personId, YearMonth yearMonth) throws IOException, JSONException {
         LocalDateTime startOfMonth = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = yearMonth.atEndOfMonth().atTime(LocalTime.MAX);
-
         long startedAfter = startOfMonth.toInstant(ZoneOffset.UTC).toEpochMilli();
         long startedBefore = endOfMonth.toInstant(ZoneOffset.UTC).toEpochMilli();
-
         OkHttpClient client = new OkHttpClient();
-        String credentials = Base64.getEncoder().encodeToString((jiraAccountId + ":" + jiraToken).getBytes());
-
-        HttpUrl url = HttpUrl.parse(jiraBaseUri + "/rest/api/3/issue/" + issueId + "/worklog").newBuilder().addQueryParameter("startedAfter", String.valueOf(startedAfter)).addQueryParameter("startedBefore", String.valueOf(startedBefore)).build();
-
-        Request request = new Request.Builder().url(url).get().addHeader("Authorization", "Basic " + credentials).addHeader("Accept", "application/json").build();
-
+        HttpUrl url = HttpUrl.parse(jiraBaseUri + "/rest/api/3/issue/" + issueId + "/worklog").newBuilder()
+                .addQueryParameter("startedAfter", String.valueOf(startedAfter))
+                .addQueryParameter("startedBefore", String.valueOf(startedBefore))
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("Authorization", getAuthHeader())
+                .addHeader("Accept", "application/json")
+                .build();
         List<DatoAktivitet> workLogs = new ArrayList<>();
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
@@ -87,11 +97,9 @@ public class JiraIssueService {
             String responseBody = response.body().string();
             JSONObject jsonResponse = new JSONObject(responseBody);
             JSONArray worklogs = jsonResponse.getJSONArray("worklogs");
-
             for (int i = 0; i < worklogs.length(); i++) {
                 JSONObject worklog = worklogs.getJSONObject(i);
                 JSONObject author = worklog.getJSONObject("author");
-                // String authorDisplayName = author.getString("displayName");
                 String authorEmail = author.getString("emailAddress");
                 if (!personId.equalsIgnoreCase(authorEmail)) {
                     continue;
@@ -99,10 +107,9 @@ public class JiraIssueService {
                 DatoAktivitet aktivitet = new DatoAktivitet();
                 LocalDateTime started = LocalDateTime.parse(worklog.getString("started"), dateTimeFormatter);
                 aktivitet.dato = started.toLocalDate();
-
                 JSONObject comment = worklog.optJSONObject("comment");
                 if (comment != null) {
-                    //  aktivitet.kommentar = comment.getJSONArray("content").getJSONObject(0).getJSONArray("content").getJSONObject(0).getString("text");
+                    // aktivitet.kommentar = comment.getJSONArray("content").getJSONObject(0).getJSONArray("content").getJSONObject(0).getString("text");
                 }
                 aktivitet.id = worklog.getString("id");
                 aktivitet.timer = worklog.getInt("timeSpentSeconds") / 3600.0f;

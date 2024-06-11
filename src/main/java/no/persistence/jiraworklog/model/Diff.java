@@ -1,6 +1,4 @@
-package no.persistence.jiraworklog;
-
-import no.persistence.jiraworklog.model.DatoAktivitet;
+package no.persistence.jiraworklog.model;
 
 import java.util.List;
 

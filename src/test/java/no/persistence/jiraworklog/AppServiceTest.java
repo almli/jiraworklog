@@ -4,6 +4,7 @@ import no.persistence.jiraworklog.model.DatoAktivitet;
 import no.persistence.jiraworklog.model.Konfig;
 import no.persistence.jiraworklog.util.DateUtil;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.YearMonth;

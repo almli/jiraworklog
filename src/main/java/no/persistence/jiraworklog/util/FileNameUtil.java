@@ -1,6 +1,4 @@
-package no.persistence.jiraworklog;
-
-import no.persistence.jiraworklog.util.DateUtil;
+package no.persistence.jiraworklog.util;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;

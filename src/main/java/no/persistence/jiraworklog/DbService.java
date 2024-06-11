@@ -3,6 +3,7 @@ package no.persistence.jiraworklog;
 import no.persistence.jiraworklog.model.DatoAktivitet;
 import no.persistence.jiraworklog.model.Konfig;
 import no.persistence.jiraworklog.util.DateUtil;
+import no.persistence.jiraworklog.util.FileNameUtil;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -21,7 +22,14 @@ public class DbService {
     private final String rotkatalog;
 
     public DbService(String rotkatalog) {
+        if (rotkatalog != null && !rotkatalog.endsWith("/") && !rotkatalog.endsWith("\\")) {
+            rotkatalog = rotkatalog + "/";
+        }
         this.rotkatalog = rotkatalog;
+        if (!Files.exists(Paths.get(rotkatalog))) {
+            throw new RuntimeException("Katalogen " + rotkatalog + " finnes ikke. Opprett katalogen og legg til konfigurasjonsfilen 'konfig.yaml'. Se README.md for mer informasjon.");
+        }
+        getKonfig();
     }
 
     public Konfig getKonfig() {
@@ -77,8 +85,6 @@ public class DbService {
         if (!Files.exists(path)) {
             initMonth(yearMonth);
         }
-
         return TimelisteIO.readFromString(Files.readString(path));
     }
-
 }

@@ -1,6 +1,5 @@
 package no.persistence.jiraworklog.util;
 
-import no.persistence.jiraworklog.FileNameUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

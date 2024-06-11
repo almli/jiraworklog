@@ -29,7 +29,6 @@ public class TimelisteIO {
                     isFirstRecord = false;
                     continue; // skip header
                 }
-
                 if (isNullOrEmpty(record.get(3))) {
                     continue;
                 }
@@ -65,7 +64,6 @@ public class TimelisteIO {
     }
 
     public static String writeToString(YearMonth yearMonth, List<AktivitetDef> aktivitetDefList, List<DatoAktivitet> aktiviteter) {
-
         StringWriter sw = new StringWriter();
         sw.write("ukedag;dato;aktivitet;timer;kommentar\n");
         LocalDate date = yearMonth.atDay(1);
@@ -75,10 +73,8 @@ public class TimelisteIO {
                 sw.write(adjustStringLength(DateInfoUtil.getDateInfo(date), 7) + ";" + date + ";" + aktivitet.id + ";" + findTimer(aktiviteter, date, aktivitet.id) + ";;\n");
             }
             date = date.plusDays(1);
-
         } while (!date.isAfter(endDate));
         return sw.toString();
-
     }
 
     private static String findTimer(List<DatoAktivitet> aktiviteter, LocalDate date, String aktivitetId) {
@@ -113,9 +109,7 @@ public class TimelisteIO {
                 }
             }
             date = date.plusDays(1);
-
         } while (!date.isAfter(endDate));
-
         return map;
     }
 }

@@ -20,7 +20,6 @@ class JiraIssueServiceTest {
         JiraIssueService jiraIssueService = new JiraIssueService(JIRA_URL, token, account);
         List<DatoAktivitet> log = jiraIssueService.getWorkLog("PIP-6379", "lars.ivar.almli@sparebank1.no", DateUtil.parseYearMonth("202406"));
         System.out.println(log);
-
     }
 
     @Disabled
