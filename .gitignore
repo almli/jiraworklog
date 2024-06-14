@@ -6,3 +6,4 @@ target
 .project
 /data
 release.properties
+.DS_Store
