@@ -1,0 +1,5 @@
+#!/bin/sh
+
+JIRAWORKLOG_HOME=${JIRAWORKLOG_HOME:-"./data/"}
+
+java -jar lib/jiraworklog.jar "$JIRAWORKLOG_HOME" "$@"
