@@ -16,7 +16,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Build with Maven
-        working-directory: ./app
         run: mvn clean package
 
       - name: Upload artifacts
