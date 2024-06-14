@@ -31,9 +31,12 @@ jobs:
       - name: Install GitHub CLI
         run: sudo apt-get install gh
 
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< "${{ secrets.GH_PAT }}"
+
       - name: Create GitHub Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           TAG_NAME=$(echo $GITHUB_REF | sed 's/refs\/tags\///')
           RELEASE_NAME="Release $TAG_NAME"
