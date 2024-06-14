@@ -21,5 +21,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: sb1_fremtind
+          name: jiraworklog
           path: target/jiraworklog-*.zip
