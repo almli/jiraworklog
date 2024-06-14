@@ -3,7 +3,7 @@
     <groupId>no.persistence.jiraworklog</groupId>
     <artifactId>jiraworklog</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <name>jiraworklog</name>
     <properties>
         <common-csv.version>1.8</common-csv.version>
@@ -20,9 +20,9 @@
         <snakeyaml.version>1.33</snakeyaml.version>
     </properties>
     <scm>
-        <url>https://github.com/almli/worklog.git</url>
-        <connection>scm:git:ssh://git@github.com/almli/worklog.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/almli/worklog.git</developerConnection>
+        <url>https://github.com/almli/jiraworklog.git</url>
+        <connection>scm:git:ssh://git@github.com/almli/jiraworklog.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/almli/jiraworklog.git</developerConnection>
         <tag>jiraworklog-1.0</tag>
     </scm>
     <dependencies>
