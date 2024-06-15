@@ -1,5 +1,9 @@
 #!/bin/sh
 
-JIRAWORKLOG_HOME=${JIRAWORKLOG_HOME:-"./data/"}
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-java -jar lib/jiraworklog.jar "$JIRAWORKLOG_HOME" "$@"
+JIRAWORKLOG_HOME=${JIRAWORKLOG_HOME:-"$SCRIPT_DIR/data/"}
+
+JAR_FILE="$SCRIPT_DIR/lib/jiraworklog.jar"
+
+java -jar "$JAR_FILE" "$JIRAWORKLOG_HOME" "$@"
