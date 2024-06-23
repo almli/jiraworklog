@@ -13,6 +13,7 @@ data/konfig.yaml:
 jiraKontoId: <din epost adresse>
 jiraApiToken: <api token fra https://id.atlassian.com/manage-profile/security/api-tokens >
 jiraUrl: https://<domene>.atlassian.net
+timelisteformat: standard
 
 # jira saker det skal føres timer på
 aktiviteter:

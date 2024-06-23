@@ -1,14 +1,17 @@
 package no.persistence.jiraworklog;
 
-import no.persistence.jiraworklog.model.*;
+import no.persistence.jiraworklog.model.AktivitetDef;
+import no.persistence.jiraworklog.model.DatoAktivitet;
+import no.persistence.jiraworklog.model.Konfig;
+import no.persistence.jiraworklog.model.PushDesc;
 import no.persistence.jiraworklog.util.DateUtil;
 
 import java.io.IOException;
 import java.time.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
+
+import static no.persistence.jiraworklog.util.DatoAktivitetUtil.getPushDesc;
 
 public class AppService {
 
@@ -76,31 +79,8 @@ public class AppService {
         Konfig konfig = dbService.getKonfig();
         List<DatoAktivitet> jiraLog = getFromJira(yearMonth);
         List<DatoAktivitet> lokalLog = dbService.load(yearMonth);
-        Map<DatoAktivitetKey, String> jiraActivityDays = TimelisteIO.toActivityDays(yearMonth, konfig.aktiviteter, jiraLog);
-        Map<DatoAktivitetKey, String> lokalActivityDays = TimelisteIO.toActivityDays(yearMonth, konfig.aktiviteter, lokalLog);
-        PushDesc pushDesc = new PushDesc();
-        pushDesc.deletes = new ArrayList<>();
-        pushDesc.adds = new ArrayList<>();
-        lokalActivityDays.entrySet().forEach(entry -> {
-            if (!jiraActivityDays.containsKey(entry.getKey())) {
-                pushDesc.adds.addAll(findDatoAktivitet(lokalLog, entry.getKey()));
-            } else if (!entry.getValue().equalsIgnoreCase(jiraActivityDays.get(entry.getKey()))) {
-                pushDesc.adds.addAll(findDatoAktivitet(lokalLog, entry.getKey()));
-                pushDesc.deletes.addAll(findDatoAktivitet(jiraLog, entry.getKey()));
-            }
-        });
-        jiraActivityDays.entrySet().forEach(entry -> {
-            if (!lokalActivityDays.containsKey(entry.getKey())) {
-                pushDesc.deletes.addAll(findDatoAktivitet(jiraLog, entry.getKey()));
-            }
-        });
-        pushDesc.adds.sort(Comparator.comparing((DatoAktivitet a) -> a.dato).thenComparing(a -> a.aktivitet));
-        pushDesc.deletes.sort(Comparator.comparing((DatoAktivitet a) -> a.dato).thenComparing(a -> a.aktivitet));
+        PushDesc pushDesc = getPushDesc(yearMonth, konfig.aktiviteter, lokalLog, jiraLog);
         return pushDesc;
-    }
-
-    private List<DatoAktivitet> findDatoAktivitet(List<DatoAktivitet> aktivitetList, DatoAktivitetKey key) {
-        return aktivitetList.stream().filter(aktivitet -> aktivitet.aktivitet.equalsIgnoreCase(key.aktivitetId) && aktivitet.dato.equals(key.dato)).toList();
     }
 
     public void initNextMonth() throws IOException {

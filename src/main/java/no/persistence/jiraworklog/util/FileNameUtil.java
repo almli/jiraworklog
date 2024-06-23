@@ -1,25 +1,30 @@
 package no.persistence.jiraworklog.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.YearMonth;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileNameUtil {
-    private static final Pattern TIMELISTE_PATTERN = Pattern.compile("^timeliste_(\\d{6})\\.csv$");
 
-    public static boolean isTimlelisteFileName(String fileName) {
+    public static boolean isTimlelisteFileName(String fileName, String filtype) {
         if (fileName == null) {
             return false;
         }
-        return TIMELISTE_PATTERN.matcher(fileName).matches();
+        return patternForFiltype(filtype).matcher(fileName).matches();
     }
 
-    public static YearMonth getYearMonthFromFileName(String fileName) {
+    private static @NotNull Pattern patternForFiltype(String filtype) {
+        return Pattern.compile("^timeliste_(\\d{6})\\." + filtype + "$");
+    }
+
+    public static YearMonth getYearMonthFromFileName(String fileName, String filtype) {
         if (fileName == null) {
             throw new IllegalArgumentException("Filename is null");
         }
-        Matcher matcher = TIMELISTE_PATTERN.matcher(fileName);
+        Matcher matcher = patternForFiltype(filtype).matcher(fileName);
         if (matcher.matches()) {
             String yearMonthString = matcher.group(1);
             try {
@@ -31,7 +36,7 @@ public class FileNameUtil {
         throw new IllegalArgumentException("Invalid filename: " + fileName);
     }
 
-    public static String toTimelisteFileName(String suffix, YearMonth yearMonth) {
-        return "timeliste_" + DateUtil.formatYearMonth(yearMonth) + suffix + ".csv";
+    public static String toTimelisteFileName(String suffix, YearMonth yearMonth, String filtype) {
+        return "timeliste_" + DateUtil.formatYearMonth(yearMonth) + suffix + "." + filtype;
     }
 }

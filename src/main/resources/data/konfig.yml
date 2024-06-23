@@ -1,7 +1,7 @@
 jiraKontoId: <din epost adresse>
 jiraApiToken: <api token fra https://id.atlassian.com/manage-profile/security/api-tokens >
 jiraUrl: https://<domene>.atlassian.net
-
+timelisteformat: tripletex
 # jira saker det skal føres timer på
 aktiviteter:
   - id: TIM-1

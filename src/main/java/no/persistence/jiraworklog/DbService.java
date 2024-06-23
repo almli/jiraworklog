@@ -2,6 +2,7 @@ package no.persistence.jiraworklog;
 
 import no.persistence.jiraworklog.model.DatoAktivitet;
 import no.persistence.jiraworklog.model.Konfig;
+import no.persistence.jiraworklog.model.TimelisteFileFormat;
 import no.persistence.jiraworklog.util.DateUtil;
 import no.persistence.jiraworklog.util.FileNameUtil;
 import org.yaml.snakeyaml.Yaml;
@@ -21,6 +22,8 @@ public class DbService {
 
     private final String rotkatalog;
 
+    private TimelisteFileFormat _filformatImpl;
+
     public DbService(String rotkatalog) {
         if (rotkatalog != null && !rotkatalog.endsWith("/") && !rotkatalog.endsWith("\\")) {
             rotkatalog = rotkatalog + "/";
@@ -34,6 +37,13 @@ public class DbService {
 
     public Konfig getKonfig() {
         return read(rotkatalog + "/konfig.yaml", Konfig.class);
+    }
+
+    private TimelisteFileFormat getTimelisteFilformat() {
+        if (_filformatImpl == null) {
+            _filformatImpl = TimelisteFileFormatImplRepo.getByName(getKonfig().timelisteformat);
+        }
+        return _filformatImpl;
     }
 
     private static <T> T read(String path, Class<T> t) {
@@ -51,7 +61,8 @@ public class DbService {
 
     public YearMonth getCurrentMonth() {
         File file = new File(rotkatalog);
-        OptionalInt siste = Arrays.stream(file.listFiles(f -> !f.isDirectory() && FileNameUtil.isTimlelisteFileName(f.getName()))).mapToInt(f -> Integer.parseInt(DateUtil.formatYearMonth(FileNameUtil.getYearMonthFromFileName(f.getName())))).max();
+        String filtype = getTimelisteFilformat().getFileType();
+        OptionalInt siste = Arrays.stream(file.listFiles(f -> !f.isDirectory() && FileNameUtil.isTimlelisteFileName(f.getName(), filtype))).mapToInt(f -> Integer.parseInt(DateUtil.formatYearMonth(FileNameUtil.getYearMonthFromFileName(f.getName(), filtype)))).max();
         return siste.isEmpty() ? null : DateUtil.parseYearMonth(siste.getAsInt() + "");
     }
 
@@ -67,17 +78,17 @@ public class DbService {
     }
 
     private void initMonth(YearMonth yearMonth) throws IOException {
-        String timeliste = TimelisteIO.writeToString(yearMonth, getKonfig().aktiviteter, List.of());
-        Files.writeString(Paths.get(timelisteFilename("", yearMonth)), timeliste);
+        byte[] data = getTimelisteFilformat().serialize(yearMonth, getKonfig().aktiviteter, List.of());
+        Files.write(Paths.get(timelisteFilename("", yearMonth)), data);
     }
 
     public void save(YearMonth yearMonth, List<DatoAktivitet> aktivitetList, String suffix) throws IOException {
-        String timeliste = TimelisteIO.writeToString(yearMonth, getKonfig().aktiviteter, aktivitetList);
-        Files.writeString(Paths.get(timelisteFilename(suffix, yearMonth)), timeliste);
+        byte[] timeliste = getTimelisteFilformat().serialize(yearMonth, getKonfig().aktiviteter, aktivitetList);
+        Files.write(Paths.get(timelisteFilename(suffix, yearMonth)), timeliste);
     }
 
     private String timelisteFilename(String suffix, YearMonth yearMonth) {
-        return rotkatalog + FileNameUtil.toTimelisteFileName(suffix, yearMonth);
+        return rotkatalog + FileNameUtil.toTimelisteFileName(suffix, yearMonth, getTimelisteFilformat().getFileType());
     }
 
     public List<DatoAktivitet> load(YearMonth yearMonth) throws IOException {
@@ -85,6 +96,6 @@ public class DbService {
         if (!Files.exists(path)) {
             initMonth(yearMonth);
         }
-        return TimelisteIO.readFromString(Files.readString(path));
+        return getTimelisteFilformat().deserialize(Files.readAllBytes(path));
     }
 }

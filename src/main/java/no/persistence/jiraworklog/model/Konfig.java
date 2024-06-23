@@ -6,6 +6,6 @@ public class Konfig {
     public String jiraKontoId;
     public String jiraApiToken;
     public String jiraUrl;
-
+    public String timelisteformat;
     public List<AktivitetDef> aktiviteter;
 }

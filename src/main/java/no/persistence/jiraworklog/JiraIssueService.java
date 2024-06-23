@@ -16,7 +16,6 @@ import java.util.List;
 public class JiraIssueService {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-
     private final String jiraBaseUri;
     private final String jiraToken;
     private final String jiraAccountId;

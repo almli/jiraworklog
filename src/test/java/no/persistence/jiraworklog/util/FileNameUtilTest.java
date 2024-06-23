@@ -9,25 +9,25 @@ class FileNameUtilTest {
 
     @Test
     void isTimlelisteFileName() {
-        assertEquals(true, FileNameUtil.isTimlelisteFileName("timeliste_202401.csv"));
-        assertEquals(false, FileNameUtil.isTimlelisteFileName("aktiviteter_202401.csv"));
+        assertEquals(true, FileNameUtil.isTimlelisteFileName("timeliste_202401.csv", "csv"));
+        assertEquals(false, FileNameUtil.isTimlelisteFileName("aktiviteter_202401.csv","csv"));
     }
 
     @Test
     void getYearMonthFromFileName() {
-        assertEquals(DateUtil.parseYearMonth("202401"), FileNameUtil.getYearMonthFromFileName("timeliste_202401.csv"));
+        assertEquals(DateUtil.parseYearMonth("202401"), FileNameUtil.getYearMonthFromFileName("timeliste_202401.csv","csv"));
     }
 
     @Test
     void getYearMonthFromFileNameInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("2021-aktiviteter.csv"));
-        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("202101aktiviteter.csv"));
-        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("aktiviteter.csv"));
-        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("aktiviteter.csv"));
+        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("2021-aktiviteter.csv","csv"));
+        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("202101aktiviteter.csv","csv"));
+        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("aktiviteter.csv","csv"));
+        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName("aktiviteter.csv","csv"));
     }
 
     @Test
     void getYearMonthFromFileNameNull() {
-        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName(null));
+        assertThrows(IllegalArgumentException.class, () -> FileNameUtil.getYearMonthFromFileName(null,"csv"));
     }
 }

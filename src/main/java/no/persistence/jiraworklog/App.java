@@ -1,6 +1,7 @@
 package no.persistence.jiraworklog;
 
 import no.persistence.jiraworklog.model.Konfig;
+import no.persistence.jiraworklog.model.TimelisteFileFormat;
 import no.persistence.jiraworklog.util.DateUtil;
 
 import java.io.IOException;
@@ -51,5 +52,10 @@ public class App {
         System.out.println("   c) test - Skriver ut hva som vil bli gjort ved push.");
         System.out.println("   d) push - Oppdaterer Jira med timelisten.");
         System.out.println("3) år måned (valgfritt) - År og måned i formatet 'yyyyMM'. Om ikke oppgitt brukes siste tilgjengelige ('pull', 'test', og 'push').");
+        System.out.println("\nFølgende filformater er støttet for timelister:");
+        for(TimelisteFileFormat impl : TimelisteFileFormatImplRepo.getSupportedTimelisteFormats().values()) {
+            System.out.println(impl.getFormatName() + " : " + impl.getDescription());
+        }
+        System.out.println("Uavhengig av hvilket format som benyttes så må timelistefilene ligge i data-katalogen med navn timeliste_<yyyyMM>.<filtype>. F.eks timeliste_202406.csv");
     }
 }
