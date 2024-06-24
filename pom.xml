@@ -3,7 +3,7 @@
     <groupId>no.persistence.jiraworklog</groupId>
     <artifactId>jiraworklog</artifactId>
     <packaging>jar</packaging>
-    <version>1.9-SNAPSHOT</version>
+    <version>1.9</version>
     <name>jiraworklog</name>
     <properties>
         <common-csv.version>1.8</common-csv.version>
@@ -23,7 +23,7 @@
         <url>https://github.com/almli/jiraworklog.git</url>
         <connection>scm:git:ssh://git@github.com/almli/jiraworklog.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/almli/jiraworklog.git</developerConnection>
-        <tag>jiraworklog-1.0</tag>
+        <tag>jiraworklog-1.9</tag>
     </scm>
     <dependencies>
         <dependency>
