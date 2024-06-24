@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
 
 public class TimelisteFileFormatTripletexImpl implements TimelisteFileFormat {
 
+    private final static String headerPart1 = "Avdelingsnummer;Avdelingsnavn;Ansattnummer;Ansattnavn;Aktivitet Nummer;Aktivitet Navn;";
+
+
     @Override
     public List<DatoAktivitet> deserialize(byte[] data, YearMonth month, Konfig konfig) {
         List<DatoAktivitet> list = new ArrayList<>();
@@ -25,7 +28,12 @@ public class TimelisteFileFormatTripletexImpl implements TimelisteFileFormat {
             CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';');
             Iterable<CSVRecord> records = format.parse(reader);
 
+            boolean isFirstRecord = true;
             for (CSVRecord record : records) {
+                if (isFirstRecord) {
+                    isFirstRecord = false;
+                    continue; // skip header
+                }
                 // Iterate over all days in the YearMonth
                 for (int day = 1; day <= month.lengthOfMonth(); day++) {
                     DatoAktivitet rta = new DatoAktivitet();
@@ -47,7 +55,13 @@ public class TimelisteFileFormatTripletexImpl implements TimelisteFileFormat {
     @Override
     public byte[] serialize(YearMonth yearMonth, List<AktivitetDef> aktivitetDefList, List<DatoAktivitet> aktiviteter) {
         StringWriter sw = new StringWriter();
-        String dummyNavn = "Bjørn Haakenstad";
+        sw.write(headerPart1);
+        for (int day = 1; day <= yearMonth.lengthOfMonth(); day++) {
+            sw.write(day + ";");
+        }
+        sw.write("\n");
+
+        String dummyNavn = "";
         Map<String, List<DatoAktivitet>> groupedByAktivitet = aktiviteter
                 .stream()
                 .collect(Collectors.groupingBy(datoAktivitet -> datoAktivitet.aktivitet));
