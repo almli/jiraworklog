@@ -17,7 +17,7 @@
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <okhttp.version>4.10.0</okhttp.version>
         <pdfbox.version>3.0.0-RC1</pdfbox.version>
-        <snakeyaml.version>1.33</snakeyaml.version>
+        <snakeyaml.version>2.2</snakeyaml.version>
     </properties>
     <scm>
         <url>https://github.com/almli/jiraworklog.git</url>
