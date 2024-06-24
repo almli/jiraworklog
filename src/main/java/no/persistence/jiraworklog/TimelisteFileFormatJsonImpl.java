@@ -60,7 +60,7 @@ public class TimelisteFileFormatJsonImpl implements TimelisteFileFormat {
     }
 
     private Gson getGson() {
-        return new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
+        return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(LocalDate.class, new LocalDateAdapter()).create();
     }
 
     private static class LocalDateAdapter extends TypeAdapter<LocalDate> {
