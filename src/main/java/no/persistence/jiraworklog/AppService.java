@@ -60,6 +60,10 @@ public class AppService {
                     jiraIssueService.logWork(aktivitet.aktivitet, toOffsetDateTimeAtNineOslo(aktivitet.dato), hoursToDuration(aktivitet.timer));
                 }
             }
+            Float sumAdd = pushDesc.adds.stream().map(a -> a.timer).reduce(0.0f, Float::sum);
+            Float sumDelete = pushDesc.deletes.stream().map(a -> a.timer).reduce(0.0f, Float::sum);
+            System.out.println("Totalt antall timer som legges til = " + sumAdd);
+            System.out.println("Totalt antall timer som slettes = " + sumDelete);
         }
     }
 

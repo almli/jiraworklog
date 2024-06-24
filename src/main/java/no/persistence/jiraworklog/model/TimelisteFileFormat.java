@@ -8,5 +8,5 @@ public interface TimelisteFileFormat {
     String getFileType();
     String getDescription();
     byte[] serialize(YearMonth yearMonth, List<AktivitetDef> aktivitetDefList, List<DatoAktivitet> aktiviteter);
-    List<DatoAktivitet> deserialize(byte[] data);
+    List<DatoAktivitet> deserialize(byte[] data, YearMonth month, Konfig konfig);
 }

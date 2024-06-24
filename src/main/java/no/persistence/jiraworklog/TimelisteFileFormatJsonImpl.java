@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import no.persistence.jiraworklog.model.AktivitetDef;
 import no.persistence.jiraworklog.model.DatoAktivitet;
+import no.persistence.jiraworklog.model.Konfig;
 import no.persistence.jiraworklog.model.TimelisteFileFormat;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class TimelisteFileFormatJsonImpl implements TimelisteFileFormat {
 
-    public List<DatoAktivitet> deserialize(byte[] data) {
+    public List<DatoAktivitet> deserialize(byte[] data, YearMonth month, Konfig konfig) {
         return fromJsonFileBytes(data);
     }
 
