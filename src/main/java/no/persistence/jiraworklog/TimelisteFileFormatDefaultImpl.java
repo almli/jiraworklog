@@ -2,6 +2,7 @@ package no.persistence.jiraworklog;
 
 import no.persistence.jiraworklog.model.AktivitetDef;
 import no.persistence.jiraworklog.model.DatoAktivitet;
+import no.persistence.jiraworklog.model.Konfig;
 import no.persistence.jiraworklog.model.TimelisteFileFormat;
 import no.persistence.jiraworklog.util.DateInfoUtil;
 import org.apache.commons.csv.CSVFormat;
@@ -25,7 +26,7 @@ public class TimelisteFileFormatDefaultImpl implements TimelisteFileFormat {
     public static final String STANDARD = "standard";
     public static final String kolonner = "ukedag;dato;aktivitet;timer;kommentar";
 
-    public List<DatoAktivitet> deserialize(byte[] data) {
+    public List<DatoAktivitet> deserialize(byte[] data, YearMonth month, Konfig konfig) {
         List<DatoAktivitet> list = new ArrayList<>();
         try (Reader reader = new StringReader(new String(data));) {
             CSVFormat format = CSVFormat.DEFAULT.withDelimiter(';');

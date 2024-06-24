@@ -96,6 +96,7 @@ public class DbService {
         if (!Files.exists(path)) {
             initMonth(yearMonth);
         }
-        return getTimelisteFilformat().deserialize(Files.readAllBytes(path));
+        return getTimelisteFilformat().deserialize(Files.readAllBytes(path), yearMonth, getKonfig());
     }
+
 }

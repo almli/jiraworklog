@@ -1,9 +1,6 @@
 package no.persistence.jiraworklog;
 
-import no.persistence.jiraworklog.model.AktivitetDef;
-import no.persistence.jiraworklog.model.DatoAktivitet;
-import no.persistence.jiraworklog.model.PushDesc;
-import no.persistence.jiraworklog.model.TimelisteFileFormat;
+import no.persistence.jiraworklog.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -28,7 +25,7 @@ public class FileFormatTest {
             assertNotNull(impl.getDescription(), "Description mangler for filformat " + impl.getFormatName());
             assertNotNull(impl.getFileType(), "FileType mangler for filformat " + impl.getFormatName());
             byte[] data = impl.serialize(yearMonth, defList, aktivitetList);
-            List<DatoAktivitet> aktivitetDeserilalizedList = impl.deserialize(data);
+            List<DatoAktivitet> aktivitetDeserilalizedList = impl.deserialize(data, yearMonth, new Konfig());
             PushDesc pushDesc = getPushDesc(yearMonth, defList, aktivitetList, aktivitetDeserilalizedList);
             assertEquals(0, pushDesc.adds.size(), "Etter lagring har det dukket opp " + pushDesc.adds.size() + " aktiviteter : " + pushDesc.adds + ", for filformat " + impl.getFormatName());
             assertEquals(0, pushDesc.deletes.size(), "Etter lagring har blr " + pushDesc.adds.size() + " aktivitete mistet : " + pushDesc.deletes + ", for filformat " + impl.getFormatName());
