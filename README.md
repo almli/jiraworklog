@@ -1,8 +1,5 @@
 # jiraworklog
 
-
-# jiraworklog
-
 [jiraworklog](https://github.com/almli/jiraworklog), et program som lar deg føre timer i Jira via en lokal CSV-fil.
 
 ## Komme i gang
