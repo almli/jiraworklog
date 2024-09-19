@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.persistence.jiraworklog</groupId>
     <artifactId>jiraworklog</artifactId>
     <packaging>jar</packaging>
-    <version>1.12-SNAPSHOT</version>
+    <version>1.12</version>
     <name>jiraworklog</name>
     <properties>
         <common-csv.version>1.8</common-csv.version>
@@ -24,7 +23,7 @@
         <url>https://github.com/almli/jiraworklog.git</url>
         <connection>scm:git:ssh://git@github.com/almli/jiraworklog.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/almli/jiraworklog.git</developerConnection>
-        <tag>jiraworklog-1.0</tag>
+        <tag>jiraworklog-1.12</tag>
     </scm>
     <dependencies>
         <dependency>
