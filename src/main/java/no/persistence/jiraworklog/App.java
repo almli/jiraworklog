@@ -5,13 +5,15 @@ import no.persistence.jiraworklog.model.TimelisteFileFormat;
 import no.persistence.jiraworklog.util.DateUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Properties;
 
 public class App {
 
     public static void main(String[] args) throws IOException {
-        System.out.println("args:" + List.of(args));
+        System.out.println("jiraworklog versjon " + getVersjon() + " args:" + List.of(args));
         if (args.length > 3 || args.length < 2) {
             printHelp();
             return;
@@ -43,6 +45,22 @@ public class App {
         }
     }
 
+    public static String getVersjon() {
+        Properties properties = new Properties();
+        // Use ClassLoader to access resources within the JAR
+        try (InputStream inputStream = App.class.getClassLoader().getResourceAsStream(
+                "META-INF/maven/no.persistence.jiraworklog/jiraworklog/pom.properties")) {
+            if (inputStream != null) {
+                properties.load(inputStream);
+                return properties.getProperty("version", "Version not found");
+            } else {
+                return "";
+            }
+        } catch (IOException e) {
+            return "Error reading version: " + e.getMessage();
+        }
+    }
+
     private static void printHelp() {
         System.out.println("Dette programmet krever to eller tre parametere:");
         System.out.println("1) rotkatalog - Katalogen som inneholder konfigurasjonsfilen 'konfig.yaml' og timelistene.");
@@ -53,7 +71,7 @@ public class App {
         System.out.println("   d) push - Oppdaterer Jira med timelisten.");
         System.out.println("3) år måned (valgfritt) - År og måned i formatet 'yyyyMM'. Om ikke oppgitt brukes siste tilgjengelige ('pull', 'test', og 'push').");
         System.out.println("\nFølgende filformater er støttet for timelister:");
-        for(TimelisteFileFormat impl : TimelisteFileFormatImplRepo.getSupportedTimelisteFormats().values()) {
+        for (TimelisteFileFormat impl : TimelisteFileFormatImplRepo.getSupportedTimelisteFormats().values()) {
             System.out.println(impl.getFormatName() + " : " + impl.getDescription());
         }
         System.out.println("Uavhengig av hvilket format som benyttes så må timelistefilene ligge i data-katalogen med navn timeliste_<yyyyMM>.<filtype>. F.eks timeliste_202406.csv");
