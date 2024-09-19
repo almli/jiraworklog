@@ -28,12 +28,5 @@
                 <include>*</include>
             </includes>
         </fileSet>
-        <fileSet>
-            <directory>src/main/resources</directory>
-            <includes>
-                <include>README.md</include>
-            </includes>
-            <outputDirectory>/</outputDirectory>
-        </fileSet>
     </fileSets>
 </assembly>
